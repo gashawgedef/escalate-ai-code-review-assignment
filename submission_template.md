@@ -13,7 +13,7 @@
 - ` total / count` line of code  divides `total` by total number of orders (`len(orders)` or `count`) instead of count of non-cancelled orders which result in  wrong (too low) average value  whenever cancelled orders exist.
 
 ### Edge cases & risks
-- Empty list when there is no orders and becomes `count =0` which result in  `ZeroDivisionError`
+- Empty list when there is no orders and becomes `valid_count =0` which result in  `ZeroDivisionError`
 - If all orders cancelled ,the function returns 0.0 but divides by positive total count result in misleading result or value
 
 ### Code quality / design issues
@@ -77,10 +77,9 @@ If you were to test this function, what areas or scenarios would you focus on, a
 
 ## 2) Proposed Fixes / Improvements
 ### Summary of changes
-- Require exactly one `@`
-- Ensure non-empty local and domain parts
-- Basic domain check: contains `.` and plausible TLD
-- Strip leading/trailing whitespace
+- Replaced the extremely weak "@ in email" check with a compiled regular expression for reliable structural validation (non-empty local part, single @, domain with at least one dot and TLD)
+- Added isinstance(email, str) check to safely skip non-string inputs and prevent crashes
+- Strip leading/trailing whitespace before matching
 
 ### Corrected code
 See `correct_task2.py`
@@ -106,7 +105,7 @@ If you were to test this function, what areas or scenarios would you focus on, a
 - `Valid email addresses` is misleading — barely filters anything
 
 ### Rewritten explanation
-- This function counts strings that have the basic structure of an email address (exactly one `@`, non-empty local and domain parts, domain contains at least one `.` followed by a short TLD). It applies a simple heuristic check and is not full RFC-compliant validation. Returns 0 for empty lists or when no plausible emails are found.
+- This function counts strings that match a basic but effective email pattern: non-empty local part, single @ separator, non-empty domain containing at least one dot followed by a TLD. It safely skips non-string inputs, removes leading/trailing whitespace, and returns 0 for empty lists or no matching entries. This is a practical filter, not full RFC 5322-compliant validation.
 
 ## 4) Final Judgment
 - Decision:  Reject
