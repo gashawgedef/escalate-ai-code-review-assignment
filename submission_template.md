@@ -10,7 +10,7 @@
 
 ## 1) Code Review Findings
 ### Critical bugs
-- ` total / count` line of code  divides `total` by total number of orders (`len(orders)` or `count`) instead of count of non-cancelled orders which result in  wrong (too low) average value  whenever cancelled orders exist.
+- ` total / valid_count` line of code  divides `total` by total number of orders (`len(orders)` or `valid_count`) instead of count of non-cancelled orders which result in  wrong (too low) average value  whenever cancelled orders exist.
 
 ### Edge cases & risks
 - Empty list when there is no orders and becomes `valid_count =0` which result in  `ZeroDivisionError`
